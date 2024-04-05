@@ -109,6 +109,7 @@ public class JRList extends JRedisObject {
   private void reinitialize() {
     head.next = head;
     head.prev = head;
+    size = 0;
   }
 
   @Override
