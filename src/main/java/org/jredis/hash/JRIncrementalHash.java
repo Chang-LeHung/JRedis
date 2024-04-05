@@ -235,6 +235,7 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
     return dt[0].size + dt[1].size;
   }
 
+  @Override
   public boolean contains(K key) {
     if (rehashIndex == -1) {
       return dt[0].contains(key);

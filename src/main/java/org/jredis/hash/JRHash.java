@@ -176,6 +176,7 @@ public class JRHash<K, V> implements Hash<K, V> {
     return l + 1;
   }
 
+  @Override
   public boolean contains(K key) {
     int pos = getPos(key);
     HashEntry<K, V> e = getHashEntry(key, pos);

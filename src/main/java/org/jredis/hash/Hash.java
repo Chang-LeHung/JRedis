@@ -7,4 +7,6 @@ public interface Hash<K, V> {
   V put(K key, V val);
 
   V get(K key);
+
+  boolean contains(K key);
 }
