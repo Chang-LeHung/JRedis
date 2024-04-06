@@ -5,7 +5,7 @@ import org.jredis.exception.JRedisTypeNotMatch;
 
 public class JRedisObject {
 
-  public byte[] serialize() {
+  public byte[] serialize() throws JRedisTypeNotMatch {
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     try {
       serialize(stream);

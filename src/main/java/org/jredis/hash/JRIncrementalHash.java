@@ -153,7 +153,7 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
   }
 
   private static <K extends JRedisObject, V extends JRedisObject> int serializeHash(
-      JRHash<K, V> h, OutputStream stream) throws IOException {
+      JRHash<K, V> h, OutputStream stream) throws IOException, JRedisTypeNotMatch {
     var bkt = h.buckets;
     int size = 0;
     for (var e : bkt) {
@@ -181,7 +181,7 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
   }
 
   @Override
-  public int serialize(OutputStream out) throws IOException {
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
     out.write(JRType.HASH.FLAG_NUMBER);
     int size = 5;
     int cnt;

@@ -10,7 +10,7 @@ import java.io.OutputStream;
 public class JRSet<K extends JRedisObject> extends JRedisObject {
 
   @Override
-  public int serialize(OutputStream out) throws IOException {
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
     return super.serialize(out);
   }
 

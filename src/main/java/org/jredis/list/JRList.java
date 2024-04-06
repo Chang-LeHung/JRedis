@@ -71,7 +71,7 @@ public class JRList extends JRedisObject {
   }
 
   @Override
-  public byte[] serialize() {
+  public byte[] serialize() throws JRedisTypeNotMatch {
     var stream = new ByteArrayOutputStream();
     try {
       serializeToStream(stream);
@@ -81,11 +81,11 @@ public class JRList extends JRedisObject {
   }
 
   @Override
-  public int serialize(OutputStream out) throws IOException {
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
     return serializeToStream(out);
   }
 
-  private int serializeToStream(OutputStream out) throws IOException {
+  private int serializeToStream(OutputStream out) throws IOException, JRedisTypeNotMatch {
     int s = 5;
     out.write(JRType.LIST.FLAG_NUMBER);
     EndianUtils.writeSwappedInteger(out, size);
