@@ -167,7 +167,7 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
   }
 
   private static <K extends JRedisObject, V extends JRedisObject> int serializeHashSize(
-      JRHash<K, V> h) {
+      JRHash<K, V> h) throws JRedisTypeNotMatch {
     var bkt = h.buckets;
     int size = bkt.length;
     for (int i = 0; i < size; i++) {
@@ -218,7 +218,7 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
   }
 
   @Override
-  public int serialSize() {
+  public int serialSize() throws JRedisTypeNotMatch {
     if (rehashIndex == -1) {
       return 5 + serializeHashSize(dt[0]);
     }

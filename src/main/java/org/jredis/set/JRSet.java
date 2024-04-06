@@ -20,7 +20,7 @@ public class JRSet<K extends JRedisObject> extends JRedisObject {
   }
 
   @Override
-  public int serialSize() {
+  public int serialSize() throws JRedisTypeNotMatch {
     return super.serialSize();
   }
 }

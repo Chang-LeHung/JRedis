@@ -134,7 +134,7 @@ public class JRList extends JRedisObject {
    * @return acquired byte array size in serialization
    */
   @Override
-  public int serialSize() {
+  public int serialSize() throws JRedisTypeNotMatch {
     int size = 5;
     var node = head.next;
     while (node != head) {
