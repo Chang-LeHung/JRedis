@@ -17,7 +17,7 @@ public class JRedisObject {
   /**
    * @return size(bytes) written by this object
    */
-  public int serialize(OutputStream out) throws IOException {
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
     String name = this.getClass().getName();
     throw new UnsupportedOperationException("Class " + name + " is not serializable");
   }
