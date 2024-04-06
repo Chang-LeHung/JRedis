@@ -7,7 +7,9 @@ public enum JRType {
   LIST,
   SET,
   ZSET,
-  HASH;
+  HASH,
+  INT,
+  DOUBLE;
 
   public static final JRType[] VALUES = values();
 
