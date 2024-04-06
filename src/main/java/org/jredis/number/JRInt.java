@@ -8,7 +8,7 @@ import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 
-public class JRInt extends JRedisObject {
+public class JRInt extends JRedisObject implements Comparable<JRInt> {
 
   private long val;
 
@@ -83,5 +83,10 @@ public class JRInt extends JRedisObject {
   @Override
   public int hashCode() {
     return Long.hashCode(val);
+  }
+
+  @Override
+  public int compareTo(JRInt o) {
+    return Long.compare(val, o.val);
   }
 }

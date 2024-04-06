@@ -8,7 +8,7 @@ import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 
-public class JRDouble extends JRedisObject {
+public class JRDouble extends JRedisObject implements Comparable<JRDouble> {
 
   private double val;
 
@@ -81,5 +81,10 @@ public class JRDouble extends JRedisObject {
   @Override
   public int hashCode() {
     return Double.hashCode(val);
+  }
+
+  @Override
+  public int compareTo(JRDouble o) {
+   return Double.compare(val, o.val);
   }
 }

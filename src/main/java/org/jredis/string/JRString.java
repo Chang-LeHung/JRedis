@@ -3,7 +3,6 @@ package org.jredis.string;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 import org.apache.commons.io.EndianUtils;
 import org.jredis.JRType;
@@ -11,7 +10,7 @@ import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 import org.jredis.hash.JRHash;
 
-public class JRString extends JRedisObject {
+public class JRString extends JRedisObject implements Comparable<JRString> {
 
   public static int DEFAULT_SIZE = 8;
 
@@ -106,5 +105,14 @@ public class JRString extends JRedisObject {
   @Override
   public String toString() {
     return "JRString{" + new String(buf, 0, size) + '}';
+  }
+
+  @Override
+  public int compareTo(JRString o) {
+    int minSize = Math.min(size, o.size);
+    for(int i = 0; i < minSize; i++)
+      if (buf[i] != o.buf[i])
+        return buf[i] - o.buf[i];
+    return size - o.size;
   }
 }
