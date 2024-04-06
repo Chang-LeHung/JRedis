@@ -41,7 +41,7 @@ public class JRedisObject {
   /**
    * @return 1. -1: can not be serialized 2. >0: real size of the object
    */
-  public int serialSize() {
+  public int serialSize() throws JRedisTypeNotMatch {
     String name = this.getClass().getName();
     throw new UnsupportedOperationException("Class " + name + " is not serializable");
   }
