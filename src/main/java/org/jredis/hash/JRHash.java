@@ -165,7 +165,7 @@ public class JRHash<K, V> implements Hash<K, V> {
   }
 
   public static int roundUp(int l) {
-    assert l > 1;
+    assert l > 0;
     l -= 1;
     l |= l >> 1;
     l |= l >> 2;
