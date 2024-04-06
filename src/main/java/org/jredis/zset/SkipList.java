@@ -1,5 +1,8 @@
 package org.jredis.zset;
 
+import org.apache.commons.io.EndianUtils;
+import org.jredis.JRSerializerUtil;
+import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 
@@ -54,7 +57,7 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
   public SkipList(Comparator<K> comparator) {
     head = new SkipListNode<>();
     random = new Random();
-    level = 0; // start from 0
+    level = 1; // start from 1
     size = 0;
     this.comparator = comparator;
   }
@@ -124,7 +127,7 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
     int lvl = 0;
     while (!stack.empty()) {
       node = stack.pop();
-      SkipListNode<K, V> newNode = new SkipListNode<>(node, down, key, val);
+      SkipListNode<K, V> newNode = new SkipListNode<>(null, down, key, val);
       newNode.down = down;
       down = newNode;
       newNode.right = node.right;
@@ -135,7 +138,7 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
       if (grow()) { // need grow up
         if (lvl == level) {
           level++;
-          SkipListNode<K, V> newHead = new SkipListNode<>(head, null, null, null);
+          SkipListNode<K, V> newHead = new SkipListNode<>(null, null, null, null);
           newHead.down = head;
           head = newHead;
           stack.push(head);
@@ -281,7 +284,9 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
     if (obj instanceof SkipList<?,?> skipList) {
       if (size != skipList.size) return false;
       var n1 = bottomHead(head);
+      n1 = n1.right;
       var n2 = bottomHead((SkipListNode<K, V>)skipList.head);
+      n2 = n2.right;
       while (n1 != null && n2 != null) {
         if (!n1.key.equals(n2.key) || !n1.val.equals(n2.val))
           return false;
@@ -335,11 +340,36 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
 
   @Override
   public int deserialize(InputStream stream) throws IOException, JRedisTypeNotMatch {
-    return super.deserialize(stream);
+    int off = stream.available();
+    if (stream.read() != JRType.ZSET.FLAG_NUMBER) {
+      throw new JRedisTypeNotMatch("not a skip list");
+    }
+    int cnt = EndianUtils.readSwappedInteger(stream);
+    size = 0;
+    while (cnt-- > 0) {
+      var k = JRSerializerUtil.deserialize(stream);
+      var v = JRSerializerUtil.deserialize(stream);
+      put((K)k, (V)v);
+    }
+    return off - stream.available();
   }
 
   @Override
-  public int serialize(OutputStream out) throws IOException {
-    return super.serialize(out);
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
+    out.write(JRType.ZSET.FLAG_NUMBER);
+    EndianUtils.writeSwappedInteger(out, size);
+    var n = bottomHead(head);
+    n = n.right;
+    int byteSize = 5;
+    while (null != n) {
+      if (n.key instanceof JRedisObject k && n.val instanceof JRedisObject v) {
+        byteSize += k.serialize(out);
+        byteSize += v.serialize(out);
+        n = n.right;
+      }else {
+        throw new JRedisTypeNotMatch("only JRedisObject can be serialized");
+      }
+    }
+    return byteSize;
   }
 }

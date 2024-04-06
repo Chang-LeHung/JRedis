@@ -1,11 +1,15 @@
 package org.jredis;
 
 
-import org.jredis.zset.SkipList;
-import org.junit.jupiter.api.Test;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import org.jredis.exception.JRedisTypeNotMatch;
+import org.jredis.number.JRInt;
+import org.jredis.string.JRString;
+import org.jredis.zset.SkipList;
+import org.junit.jupiter.api.Test;
 
 public class ZsetTest {
 
@@ -58,5 +62,28 @@ public class ZsetTest {
     logger.pass(range);
     range = zset.getRange("", "c");
     logger.pass(range);
+  }
+
+  @Test
+  public void testSerialization() throws JRedisTypeNotMatch, IOException {
+    SkipList<JRInt, JRString> zset = new SkipList<>();
+    zset.put(new JRInt(1), new JRString("1"));
+    zset.put(new JRInt(2), new JRString("2"));
+    zset.put(new JRInt(3), new JRString("3"));
+    zset.put(new JRInt(4), new JRString("4"));
+    zset.put(new JRInt(5), new JRString("5"));
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    zset.serialize(stream);
+
+    SkipList<JRInt, JRString> copy = new SkipList<>();
+    copy.deserialize(new ByteArrayInputStream(stream.toByteArray()));
+    assert copy.equals(zset);
+    logger.pass("equals() passed");
+    assert stream.size() == zset.serialSize();
+    logger.pass("serialSize() passed");
+    copy.update(new JRInt(1), new JRString("2"));
+    zset.get(new JRInt(1)).equals(new JRString("2"));
+    logger.pass("update() passed");
+    logger.pass(copy);
   }
 }
