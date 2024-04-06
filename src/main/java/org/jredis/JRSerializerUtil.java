@@ -1,13 +1,14 @@
 package org.jredis;
 
-import org.jredis.exception.JRedisTypeNotMatch;
-import org.jredis.hash.JRIncrementalHash;
-import org.jredis.list.JRList;
-import org.jredis.string.JRString;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.jredis.exception.JRedisTypeNotMatch;
+import org.jredis.hash.JRIncrementalHash;
+import org.jredis.list.JRList;
+import org.jredis.number.JRDouble;
+import org.jredis.number.JRInt;
+import org.jredis.string.JRString;
 
 public class JRSerializerUtil {
 
@@ -26,7 +27,14 @@ public class JRSerializerUtil {
         o = new JRList();
         o.deserialize(stream);
       }
-      case SET -> {}
+      case INT -> {
+        o = new JRInt(0);
+        o.deserialize(stream);
+      }
+      case DOUBLE -> {
+        o = new JRDouble(0);
+        o.deserialize(stream);
+      }
       case STRING -> {
         o = new JRString();
         o.deserialize(stream);
