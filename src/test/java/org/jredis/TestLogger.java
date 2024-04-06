@@ -27,6 +27,10 @@ public class TestLogger {
     out.flush();
   }
 
+  public void pass(Object o) throws IOException {
+    pass(o.toString());
+  }
+
   public void fail(String info) throws IOException {
     String s = className + ":" + "\u001B[31m" + info + "\u001B[0m\n";
     out.write(s.getBytes());
