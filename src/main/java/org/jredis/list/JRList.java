@@ -19,7 +19,6 @@ public class JRList extends JRedisObject {
   public JRList() {
     head = new Node(null);
     reinitialize();
-    size = 0;
   }
 
   JRedisObject popLeft() {
