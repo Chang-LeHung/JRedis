@@ -49,7 +49,9 @@ public class JRString extends JRedisObject implements Comparable<JRString> {
   }
 
   /**
-   * JRString memory layout layout : |type|size|data| length(byte) : | 1 | 4 |size|
+   * JRString memory layout
+   * layout       : |type|size|data|
+   * length(byte) : |  1 |  4 |size|
    *
    * @return byte[]
    */
@@ -105,6 +107,10 @@ public class JRString extends JRedisObject implements Comparable<JRString> {
   @Override
   public String toString() {
     return "JRString{" + new String(buf, 0, size) + '}';
+  }
+
+  public String bufToString() {
+    return new String(buf);
   }
 
   @Override
