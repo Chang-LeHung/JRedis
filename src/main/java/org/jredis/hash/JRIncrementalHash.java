@@ -66,6 +66,9 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
     } else {
       // in rehashing process
       doIncrementalHashStep();
+      // check the rehashing index first
+      if (rehashIndex == -1)
+        return remove(key);
       int pos = key.hashCode() & dt[0].mask;
       if (pos < rehashIndex) {
         return dt[1].remove(key);
