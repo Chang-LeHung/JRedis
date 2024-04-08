@@ -89,4 +89,8 @@ public class JRInt extends JRedisObject implements Comparable<JRInt> {
   public int compareTo(JRInt o) {
     return Long.compare(val, o.val);
   }
+
+  public String valueToString() {
+    return String.valueOf(val);
+  }
 }

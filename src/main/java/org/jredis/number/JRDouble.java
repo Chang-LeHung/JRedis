@@ -87,4 +87,8 @@ public class JRDouble extends JRedisObject implements Comparable<JRDouble> {
   public int compareTo(JRDouble o) {
    return Double.compare(val, o.val);
   }
+
+  public String valueToString() {
+    return String.valueOf(val);
+  }
 }
