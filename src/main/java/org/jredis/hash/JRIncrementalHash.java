@@ -146,6 +146,9 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
     } else {
       // forward at least a step of rehashing.
       doIncrementalHashStep();
+      // check first
+      if (rehashIndex == -1)
+        return get(key);
       int pos = key.hashCode() & dt[0].mask;
       if (pos < rehashIndex) {
         return dt[1].get(key);
