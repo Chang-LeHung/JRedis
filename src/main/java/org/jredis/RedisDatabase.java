@@ -30,6 +30,7 @@ public class RedisDatabase {
 
     nameCommands.put(Command.GET.getName(), CommandGet.GET);
     nameCommands.put(Command.SET.getName(), CommandSet.SET);
+    nameCommands.put(Command.EXISTS.getName(), CommandExists.EXISTS);
   }
 
   public static void addByteCommand(byte flag, CommandAcceptor command) {
