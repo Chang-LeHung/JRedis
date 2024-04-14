@@ -10,5 +10,5 @@ public interface CommandAcceptor {
 
   byte getFlag();
 
-  <K extends JRedisObject, V extends JRedisObject> JRedisObject  accept(RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException;
+  JRedisObject  accept(RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException;
 }

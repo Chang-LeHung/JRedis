@@ -12,7 +12,7 @@ public class CommandExists extends AbstractCommand {
   }
 
   @Override
-  public <K extends JRedisObject, V extends JRedisObject> JRedisObject accept(RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException {
+  public JRedisObject accept(RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException {
     if (args.length != 1) {
       throw new JRedisDataBaseException("Wrong number of arguments");
     }

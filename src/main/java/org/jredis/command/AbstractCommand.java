@@ -23,7 +23,7 @@ public class AbstractCommand implements CommandAcceptor {
   }
 
   @Override
-  public <K extends JRedisObject, V extends JRedisObject> JRedisObject accept(
+  public JRedisObject accept(
       RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException {
     throw new UnsupportedOperationException("not implemented");
   }
