@@ -21,6 +21,7 @@ public class RedisDatabase {
     CommandContainer.addCommand(CommandGet.GET);
     CommandContainer.addCommand(CommandSet.SET);
     CommandContainer.addCommand(CommandExists.EXISTS);
+    CommandContainer.addCommand(CommandMget.MGET);
   }
 
 
@@ -38,6 +39,10 @@ public class RedisDatabase {
 
   public JRedisObject exists(JRedisObject key) throws JRedisDataBaseException {
     return execute(Command.EXISTS.getFlag(), new JRedisObject[] {key});
+  }
+
+  public JRedisObject mget(JRedisObject ...args) throws JRedisDataBaseException {
+    return execute(Command.MGET.getFlag(), args);
   }
 
   public int getSize() {
