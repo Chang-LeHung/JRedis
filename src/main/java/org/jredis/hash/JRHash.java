@@ -20,7 +20,7 @@ public class JRHash<K, V> implements Hash<K, V> {
     }
   }
 
-  public static final int MAX_SIZE = 0x0ffffffe;
+  public static final int MAX_SIZE = 0x40000000;
 
   public static final int DEFAULT_SIZE = 16;
 
@@ -175,8 +175,8 @@ public class JRHash<K, V> implements Hash<K, V> {
     l |= l >> 4;
     l |= l >> 8;
     l |= l >> 16;
-    l = Math.min(l, MAX_SIZE);
-    return l + 1;
+    l = Math.min(l + 1, MAX_SIZE);
+    return l;
   }
 
   @Override
