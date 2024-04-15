@@ -8,6 +8,7 @@ import org.jredis.JRSerializerUtil;
 import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
+import org.jredis.list.JRList;
 
 public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> extends JRedisObject
     implements Hash<K, V> {
@@ -278,5 +279,38 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
       }
     }
     return true;
+  }
+
+  public JRList keys() {
+    JRList ans = new JRList();
+
+    if (dt[0] != null) {
+      for (K key : dt[0].keys()) {
+        ans.appendRight(key);
+      }
+    }
+
+    if (dt[1] != null) {
+      for (K key : dt[1].keys()) {
+        ans.appendRight(key);
+      }
+    }
+    return ans;
+  }
+
+  public JRList values() {
+    JRList ans = new JRList();
+    if (dt[0] != null) {
+      for (V val : dt[0].values()) {
+        ans.appendRight(val);
+      }
+    }
+
+    if (dt[1] != null) {
+      for (V val : dt[1].values()) {
+        ans.appendRight(val);
+      }
+    }
+    return ans;
   }
 }

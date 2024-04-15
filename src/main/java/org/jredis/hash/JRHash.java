@@ -1,8 +1,11 @@
 package org.jredis.hash;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JRHash<K, V> implements Hash<K, V> {
 
-  static class HashEntry<K, V> {
+  public static class HashEntry<K, V> {
     final K key;
     V val;
     HashEntry<K, V> nxt;
@@ -181,5 +184,43 @@ public class JRHash<K, V> implements Hash<K, V> {
     int pos = getPos(key);
     HashEntry<K, V> e = getHashEntry(key, pos);
     return null != e;
+  }
+
+  public List<K> keys() {
+    var keys = new ArrayList<K>();
+
+    for (HashEntry<K, V> bucket : buckets) {
+      HashEntry<K, V> e = bucket;
+      while (null != e) {
+        keys.add(e.key);
+        e = e.nxt;
+      }
+    }
+
+    return keys;
+  }
+
+  public List<V> values() {
+    var values = new ArrayList<V>();
+    for (HashEntry<K, V> bucket : buckets) {
+      HashEntry<K, V> e = bucket;
+      while (null != e) {
+        values.add(e.val);
+        e = e.nxt;
+      }
+    }
+    return values;
+  }
+
+  public List<HashEntry<K, V>> entries() {
+    var entries = new ArrayList<HashEntry<K, V>>();
+    for (HashEntry<K, V> bucket : buckets) {
+      HashEntry<K, V> e = bucket;
+      while (null != e) {
+        entries.add(e);
+        e = e.nxt;
+      }
+    }
+    return entries;
   }
 }
