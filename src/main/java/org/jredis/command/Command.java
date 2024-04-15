@@ -22,7 +22,12 @@ public enum Command {
 
     INCRBY("incrby"),
 
-    DECR("decr");
+    DECR("decr"),
+
+    MGET("mget"),
+
+    DECRBY("decrby");
+
 
     private static byte cnt = 0;
     /**
@@ -38,7 +43,7 @@ public enum Command {
       this.name = name;
       flag = getCnt();
     }
-    
+
     private static byte getCnt() {
         return cnt++;
     }
