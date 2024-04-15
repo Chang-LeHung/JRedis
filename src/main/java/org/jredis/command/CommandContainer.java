@@ -9,6 +9,13 @@ public class CommandContainer {
 
   private static final Map<String, CommandAcceptor> nameCommands = new HashMap<>();
 
+  public static void initRedisCommands() {
+    CommandContainer.addCommand(CommandGet.GET);
+    CommandContainer.addCommand(CommandSet.SET);
+    CommandContainer.addCommand(CommandExists.EXISTS);
+    CommandContainer.addCommand(CommandMget.MGET);
+  }
+
   public static void addCommand(CommandAcceptor command) {
     byteCommands.put(command.getFlag(), command);
     nameCommands.put(command.getName().toLowerCase(), command);

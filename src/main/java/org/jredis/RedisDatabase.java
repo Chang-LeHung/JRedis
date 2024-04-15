@@ -17,13 +17,9 @@ public class RedisDatabase {
     expire = new JRIncrementalHash<>(loadFactor);
   }
 
-  public static void ensureCommands() {
-    CommandContainer.addCommand(CommandGet.GET);
-    CommandContainer.addCommand(CommandSet.SET);
-    CommandContainer.addCommand(CommandExists.EXISTS);
-    CommandContainer.addCommand(CommandMget.MGET);
+  public static void initRedisDatabase() {
+    CommandContainer.initRedisCommands();
   }
-
 
   public JRedisObject get(JRedisObject key) throws JRedisDataBaseException {
     return execute(Command.GET.getFlag(), key);

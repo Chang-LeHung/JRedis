@@ -17,7 +17,7 @@ public class RedisDatabaseTest {
 
   @BeforeAll
   public static void testSetGet() {
-    RedisDatabase.ensureCommands();
+    RedisDatabase.initRedisDatabase();
   }
 
   @Test
