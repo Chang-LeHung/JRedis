@@ -1,7 +1,5 @@
 package org.jredis;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.jredis.command.*;
 import org.jredis.exception.JRedisDataBaseException;
 import org.jredis.hash.JRIncrementalHash;
@@ -14,32 +12,17 @@ public class RedisDatabase {
 
   private final JRIncrementalHash<JRedisObject, JRInt> expire;
 
-  public static final Map<Byte, CommandAcceptor> byteCommands = new HashMap<>();
-
-  public static final Map<String, CommandAcceptor> nameCommands = new HashMap<>();
-
   public RedisDatabase(double loadFactor) {
     db = new JRIncrementalHash<>(loadFactor);
     expire = new JRIncrementalHash<>(loadFactor);
   }
 
-  public static void initRedis() {
-    byteCommands.put(Command.GET.getFlag(), CommandGet.GET);
-    byteCommands.put(Command.SET.getFlag(), CommandSet.SET);
-    byteCommands.put(Command.EXISTS.getFlag(), CommandExists.EXISTS);
-
-    nameCommands.put(Command.GET.getName(), CommandGet.GET);
-    nameCommands.put(Command.SET.getName(), CommandSet.SET);
-    nameCommands.put(Command.EXISTS.getName(), CommandExists.EXISTS);
+  public static void ensureCommands() {
+    CommandContainer.addCommand(CommandGet.GET);
+    CommandContainer.addCommand(CommandSet.SET);
+    CommandContainer.addCommand(CommandExists.EXISTS);
   }
 
-  public static void addByteCommand(byte flag, CommandAcceptor command) {
-    byteCommands.put(flag, command);
-  }
-
-  public static void addNameCommand(String name, CommandAcceptor command) {
-    nameCommands.put(name.toLowerCase(), command);
-  }
 
   public JRedisObject get(JRedisObject key) throws JRedisDataBaseException {
     return execute(Command.GET.getFlag(), key);
@@ -63,7 +46,7 @@ public class RedisDatabase {
 
 
   JRedisObject execute(String name, JRedisObject ...args) throws JRedisDataBaseException {
-    CommandAcceptor commandAcceptor = nameCommands.get(name);
+    CommandAcceptor commandAcceptor = CommandContainer.getCommand(name);
     if (commandAcceptor == null)
       throw new JRedisDataBaseException("Command not found");
     return commandAcceptor.accept(this, args);
@@ -76,7 +59,7 @@ public class RedisDatabase {
 
 
   public JRedisObject execute(byte flag, JRedisObject ...args) throws JRedisDataBaseException {
-    CommandAcceptor command = byteCommands.get(flag);
+    CommandAcceptor command = CommandContainer.getCommand(flag);
     if (command == null)
       throw new JRedisDataBaseException("Command not found");
     return command.accept(this, args);
