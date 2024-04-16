@@ -5,6 +5,8 @@ import org.jredis.RedisDatabase;
 import org.jredis.exception.JRedisDataBaseException;
 import org.jredis.list.JRList;
 
+import java.util.Objects;
+
 public class CommandMget extends AbstractCommand {
   private CommandMget(Command command) {
     super(command);
@@ -19,10 +21,7 @@ public class CommandMget extends AbstractCommand {
     JRList res = new JRList();
     for (JRedisObject arg : args) {
       JRedisObject obj = database.get(arg);
-      if (obj != null)
-        res.appendRight(obj);
-      else
-        res.appendRight(CommandReturnState.Nil);
+      res.appendRight(Objects.requireNonNullElse(obj, CommandReturnState.Nil));
     }
     return res;
   }
