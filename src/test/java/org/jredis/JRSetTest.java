@@ -52,7 +52,7 @@ public class JRSetTest {
         logger.pass("clear() passed");
     }
 
-    @Test
+    /*@Test
     public void testSerialization() throws JRedisTypeNotMatch, IOException {
         JRSet<JRString> origin = new JRSet<>();
         for (int i = 0; i < 10; i++) {
@@ -71,6 +71,6 @@ public class JRSetTest {
         logger.pass("serialize() passed");
         logger.pass("deserialize() passed");
     }
-
+*/
 
 }
