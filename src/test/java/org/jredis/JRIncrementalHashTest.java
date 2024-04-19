@@ -2,7 +2,6 @@ package org.jredis;
 
 import org.jredis.exception.JRedisTypeNotMatch;
 import org.jredis.hash.JRIncrementalHash;
-import org.jredis.list.JRList;
 import org.jredis.string.JRString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
