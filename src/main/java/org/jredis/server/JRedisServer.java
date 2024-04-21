@@ -126,6 +126,11 @@ public class JRedisServer {
 
   public void shutDown(int exitCode) {
     state = ServerState.STOPPED;
+    try {
+      server.close();
+      selector.close();
+    } catch (IOException ignore) {
+    }
     if (exitCode == 0) {
       log.info("JRedis exit");
     } else {
