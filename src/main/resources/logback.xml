@@ -1,0 +1,27 @@
+<configuration>
+    <property name="PATH" value="src/main/resources" />
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件名称 -->
+        <file>${PATH}/jredis.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天滚动生成历史日志文件 -->
+            <fileNamePattern>${PATH}/jredis.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 历史日志文件保存的天数和容量大小-->
+            <maxHistory>1024</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36} %M{20}:%line{5}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+        <queueSize>100000</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC" />
+    </root>
+</configuration>
