@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import lombok.Getter;
 import org.apache.commons.io.EndianUtils;
 import org.jredis.JRType;
 import org.jredis.JRedisObject;
@@ -15,6 +16,8 @@ public class JRString extends JRedisObject implements Comparable<JRString> {
   public static int DEFAULT_SIZE = 8;
 
   private byte[] buf;
+
+  @Getter
   private int size;
 
   public JRString(String s) {
@@ -32,10 +35,6 @@ public class JRString extends JRedisObject implements Comparable<JRString> {
   @Override
   public int serialSize() {
     return size + 5;
-  }
-
-  public int getSize() {
-    return size;
   }
 
   @Override
