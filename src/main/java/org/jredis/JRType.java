@@ -23,7 +23,7 @@ public enum JRType {
 
   @Override
   public String toString() {
-    return "JRType{" +
+    return name() +  "{" +
         "FLAG_NUMBER=" + FLAG_NUMBER +
         '}';
   }
