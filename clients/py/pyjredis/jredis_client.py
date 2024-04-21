@@ -15,12 +15,13 @@ def main() -> int:
 	client = JRedisClient(args.host, args.port)
 	while True:
 		try:
-			command = prompt(f'{args.host}:{args.port}> ')
+			command = prompt(f'{args.host}:{args.port}> ').strip()
+			if len(command) == 0:
+				continue
 			if command == 'exit':
 				break
 			ret = client.process_command(command)
 			print(ret.__repr__())
 		except Exception as e:
 			print(e, file=sys.stderr)
-			return 1
 	return 0
