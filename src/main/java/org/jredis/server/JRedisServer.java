@@ -6,6 +6,7 @@ import java.nio.channels.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -84,9 +85,12 @@ public class JRedisServer {
   }
 
   public void eventPoll() throws IOException {
-    int size = selector.select();
-    if (size == 0) return;
-    Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
+    selector.select();
+    dispatchEvent(selector.selectedKeys());
+  }
+
+  private void dispatchEvent(Set<SelectionKey> keys) throws IOException {
+    Iterator<SelectionKey> iterator = keys.iterator();
     while (iterator.hasNext()) {
       SelectionKey key = iterator.next();
       if (key.isValid() && key.isAcceptable()) {
