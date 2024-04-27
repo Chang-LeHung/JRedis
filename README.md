@@ -15,4 +15,4 @@ A simple implementation of redis in Java
 ## 运行客户端
 
 - `pip install prompt_toolkit`
-- python entry.py
+- `python clients/py/entry.py` 
