@@ -10,7 +10,7 @@ A simple implementation of redis in Java
 ## 运行服务器
 
 - 可以直接在 idea 当中运行文件 `JRedisEntry.java`
-- 或者使用 `mvn clean package` 命令打包，然后执行 `java -jar JRedis-1.0-SNAPSHOT-jar-with-dependencies.jar`
+- 或者使用 `mvn clean package` 命令打包，然后执行 `java -jar target/JRedis-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
 ## 运行客户端
 
