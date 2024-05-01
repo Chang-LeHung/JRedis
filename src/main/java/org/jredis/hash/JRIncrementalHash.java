@@ -59,6 +59,34 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
     rehashIndex = -1;
   }
 
+  private static <K extends JRedisObject, V extends JRedisObject> int serializeHash(
+      JRHash<K, V> h, OutputStream stream) throws IOException, JRedisTypeNotMatch {
+    var bkt = h.buckets;
+    int size = 0;
+    for (var e : bkt) {
+      while (null != e) {
+        size += e.key.serialize(stream);
+        size += e.val.serialize(stream);
+        e = e.nxt;
+      }
+    }
+    return size;
+  }
+
+  private static <K extends JRedisObject, V extends JRedisObject> int serializeHashSize(
+      JRHash<K, V> h) throws JRedisTypeNotMatch {
+    var bkt = h.buckets;
+    int size = 0;
+    for (var e : bkt) {
+      while (null != e) {
+        size += e.key.serialSize();
+        size += e.val.serialSize();
+        e = e.nxt;
+      }
+    }
+    return size;
+  }
+
   @Override
   public V remove(K key) {
     if (rehashIndex == -1) {
@@ -157,34 +185,6 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
         return dt[0].get(key);
       }
     }
-  }
-
-  private static <K extends JRedisObject, V extends JRedisObject> int serializeHash(
-      JRHash<K, V> h, OutputStream stream) throws IOException, JRedisTypeNotMatch {
-    var bkt = h.buckets;
-    int size = 0;
-    for (var e : bkt) {
-      while (null != e) {
-        size += e.key.serialize(stream);
-        size += e.val.serialize(stream);
-        e = e.nxt;
-      }
-    }
-    return size;
-  }
-
-  private static <K extends JRedisObject, V extends JRedisObject> int serializeHashSize(
-      JRHash<K, V> h) throws JRedisTypeNotMatch {
-    var bkt = h.buckets;
-    int size = 0;
-    for (var e : bkt) {
-      while (null != e) {
-        size += e.key.serialSize();
-        size += e.val.serialSize();
-        e = e.nxt;
-      }
-    }
-    return size;
   }
 
   @Override

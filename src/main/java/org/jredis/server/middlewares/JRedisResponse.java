@@ -13,15 +13,11 @@ import org.jredis.exception.JRedisTypeNotMatch;
 public class JRedisResponse {
 
   private final JRType type;
-
-  @Setter private ByteBuffer out;
-
-  private final int size;
-
+  private final int byteSize;
   private final JRedisObject retObj;
-
   private final JRedisRequest request;
-
+  @Setter
+  private ByteBuffer out;
   @Setter
   private boolean isError = false;
 
@@ -32,7 +28,7 @@ public class JRedisResponse {
     o.serialize(stream);
     var arr = stream.toByteArray();
     out = ByteBuffer.wrap(arr);
-    size = arr.length;
+    byteSize = arr.length;
     this.type = o.getType();
     this.request = request;
   }

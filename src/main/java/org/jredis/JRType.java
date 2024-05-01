@@ -17,8 +17,16 @@ public enum JRType {
 
   public final byte FLAG_NUMBER;
 
+  JRType() {
+    FLAG_NUMBER = getCnt();
+  }
+
   private static byte getCnt() {
     return cnt++;
+  }
+
+  public static void main(String[] args){
+    System.out.println(Arrays.toString(VALUES));
   }
 
   @Override
@@ -26,12 +34,5 @@ public enum JRType {
     return name() +  "{" +
         "FLAG_NUMBER=" + FLAG_NUMBER +
         '}';
-  }
-
-  JRType() {
-    FLAG_NUMBER = getCnt();
-  }
-  public static void main(String[] args){
-    System.out.println(Arrays.toString(VALUES));
   }
 }

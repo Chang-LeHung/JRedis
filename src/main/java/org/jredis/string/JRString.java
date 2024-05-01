@@ -3,7 +3,6 @@ package org.jredis.string;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import lombok.Getter;
 import org.apache.commons.io.EndianUtils;
 import org.jredis.JRType;

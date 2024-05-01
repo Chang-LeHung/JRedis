@@ -5,35 +5,16 @@ import java.util.List;
 
 public class JRHash<K, V> implements Hash<K, V> {
 
-  public static class HashEntry<K, V> {
-    final K key;
-    V val;
-    HashEntry<K, V> nxt;
-
-    public HashEntry(K key) {
-      this.key = key;
-    }
-
-    public HashEntry(K key, V val) {
-      this.key = key;
-      this.val = val;
-    }
-  }
-
   public static final int MAX_SIZE = 0x40000000;
-
   public static final int DEFAULT_SIZE = 16;
-
   public static final double LOAD_FACTOR = .75;
-
+  private final double lf;
   int mask;
 
   /** {@link JRIncrementalHash} will use the field so using default access flag. */
   HashEntry<K, V>[] buckets;
 
   int size;
-  private final double lf;
-
   public JRHash(int len) {
     this(len, LOAD_FACTOR);
   }
@@ -60,6 +41,18 @@ public class JRHash<K, V> implements Hash<K, V> {
     buckets = new HashEntry[DEFAULT_SIZE];
     size = 0;
     mask = DEFAULT_SIZE - 1;
+  }
+
+  public static int roundUp(int l) {
+    assert l > 0;
+    l -= 1;
+    l |= l >> 1;
+    l |= l >> 2;
+    l |= l >> 4;
+    l |= l >> 8;
+    l |= l >> 16;
+    l = Math.min(l + 1, MAX_SIZE);
+    return l;
   }
 
   public int getSize() {
@@ -167,18 +160,6 @@ public class JRHash<K, V> implements Hash<K, V> {
     return put(key, val);
   }
 
-  public static int roundUp(int l) {
-    assert l > 0;
-    l -= 1;
-    l |= l >> 1;
-    l |= l >> 2;
-    l |= l >> 4;
-    l |= l >> 8;
-    l |= l >> 16;
-    l = Math.min(l + 1, MAX_SIZE);
-    return l;
-  }
-
   @Override
   public boolean contains(K key) {
     int pos = getPos(key);
@@ -222,5 +203,20 @@ public class JRHash<K, V> implements Hash<K, V> {
       }
     }
     return entries;
+  }
+
+  public static class HashEntry<K, V> {
+    final K key;
+    V val;
+    HashEntry<K, V> nxt;
+
+    public HashEntry(K key) {
+      this.key = key;
+    }
+
+    public HashEntry(K key, V val) {
+      this.key = key;
+      this.val = val;
+    }
   }
 }

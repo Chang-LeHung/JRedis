@@ -1,18 +1,17 @@
 package org.jredis.set;
 
-import org.jredis.JRType;
-import org.jredis.JRedisObject;
-import org.jredis.exception.JRedisTypeNotMatch;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.stream.Collectors;
+import org.jredis.JRType;
+import org.jredis.JRedisObject;
+import org.jredis.exception.JRedisTypeNotMatch;
 
 public class JRSet<K extends JRedisObject> extends JRedisObject implements Iterable<K> {
-    private HashSet<K> set = new HashSet<>();
+    private final HashSet<K> set = new HashSet<>();
 
     // 添加元素
     public boolean add(K element) {

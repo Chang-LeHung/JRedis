@@ -1,18 +1,17 @@
 package org.jredis.command;
 
+import java.util.Objects;
 import org.jredis.JRedisObject;
 import org.jredis.RedisDatabase;
 import org.jredis.exception.JRedisDataBaseException;
 import org.jredis.list.JRList;
 
-import java.util.Objects;
-
 public class CommandMget extends AbstractCommand {
+  public static final CommandMget MGET = new CommandMget(Command.MGET);
+
   private CommandMget(Command command) {
     super(command);
   }
-
-  public static final CommandMget MGET = new CommandMget(Command.MGET);
 
   @Override
   public JRedisObject accept(RedisDatabase database, JRedisObject... args) throws JRedisDataBaseException {

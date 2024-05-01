@@ -3,7 +3,6 @@ package org.jredis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import org.jredis.server.JRedisConfiguration;
 import org.jredis.server.JRedisServer;

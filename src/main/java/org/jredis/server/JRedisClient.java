@@ -22,38 +22,19 @@ import org.jredis.string.JRString;
 @Slf4j
 public class JRedisClient {
 
+  private static final int MAX_BUFFER_SIZE = 1024; // maximum bytes of per message
   @Getter
   private final SocketChannel channel;
-
   private final JRedisServer server;
-
   private final ByteBuffer buffer;
-
-  private long lastCommunication;
-
-  private static final int MAX_BUFFER_SIZE = 1024; // maximum bytes of per message
-
-  public enum ClientState {
-
-    IDEL,
-
-    READING,
-
-    WRITING,
-
-    WAITING
-  }
-
-  @Getter
-  private ClientState state;
-
-  private ByteBuffer out;
-
   @Getter
   private final InetAddress ip;
-
   @Getter
   private final int port;
+  private long lastCommunication;
+  @Getter
+  private ClientState state;
+  private ByteBuffer out;
 
   public JRedisClient(SocketChannel channel, JRedisServer server) {
     this.channel = channel;
@@ -64,6 +45,10 @@ public class JRedisClient {
     Socket socket = channel.socket();
     ip = socket.getInetAddress();
     port = socket.getPort();
+  }
+
+  private static long getCurrentSecond() {
+    return System.currentTimeMillis() / 1000;
   }
 
   public void register(int op) throws ClosedChannelException {
@@ -83,10 +68,6 @@ public class JRedisClient {
     }
   }
 
-  private static long getCurrentSecond() {
-    return System.currentTimeMillis() / 1000;
-  }
-
   private void updateLastCommunication() {
     lastCommunication = getCurrentSecond();
   }
@@ -102,6 +83,7 @@ public class JRedisClient {
           buffer.flip();
           state = ClientState.WRITING;
           handleRequest();
+          register(SelectionKey.OP_WRITE);
         } else {
           // violate the rule: less than 1k per message
           close();
@@ -123,6 +105,7 @@ public class JRedisClient {
         if (!out.hasRemaining()) {
           out = null;
           state = ClientState.IDEL;
+          register(SelectionKey.OP_READ);
         }
         return s;
       } catch (IOException e) {
@@ -166,6 +149,7 @@ public class JRedisClient {
 
   private JRedisRequest acceptMsgAndBuildRequest()
       throws JRedisTypeNotMatch, IOException {
+    int size = buffer.remaining();
     // get which command
     byte command = buffer.get();
     // get message
@@ -182,8 +166,8 @@ public class JRedisClient {
       args.add(obj);
     }
     var commandAgs = args.toArray(new JRedisObject[0]);
-    log.info("IP: {} port: {} command: {}, args: {}", ip.getHostAddress(), port, CommandContainer.getCommand(command).getName(), commandAgs);
-    return new JRedisRequest(Command.getCommand(command), commandAgs);
+log.info("IP: {} port: {} command: {}, args: {}", ip.getHostAddress(), port, CommandContainer.getCommand(command).getName(), commandAgs);
+    return new JRedisRequest(Command.getCommand(command), commandAgs, size);
   }
 
   public boolean isIDEL() {
@@ -204,5 +188,16 @@ public class JRedisClient {
         "ip=" + ip +
         ", port=" + port +
         '}';
+  }
+
+  public enum ClientState {
+
+    IDEL,
+
+    READING,
+
+    WRITING,
+
+    WAITING
   }
 }

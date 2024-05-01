@@ -59,16 +59,6 @@ public class JRList extends JRedisObject {
     size++;
   }
 
-  private static class Node {
-    private Node prev;
-    private Node next;
-    private final JRedisObject obj;
-
-    public Node(JRedisObject obj) {
-      this.obj = obj;
-    }
-  }
-
   @Override
   public byte[] serialize() throws JRedisTypeNotMatch {
     var stream = new ByteArrayOutputStream();
@@ -187,5 +177,15 @@ public class JRList extends JRedisObject {
       return true;
     }
     return false;
+  }
+
+  private static class Node {
+    private final JRedisObject obj;
+    private Node prev;
+    private Node next;
+
+    public Node(JRedisObject obj) {
+      this.obj = obj;
+    }
   }
 }

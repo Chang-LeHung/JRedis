@@ -1,54 +1,23 @@
 package org.jredis.zset;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.*;
 import org.apache.commons.io.EndianUtils;
 import org.jredis.JRSerializerUtil;
 import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.*;
-
 public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
 
   public static int MAX_LEVEL = 32;
-
-  private SkipListNode<K, V> head;
-
   private final Random random;
-
-  private int level;
-
   private final Comparator<K> comparator;
-
+  private SkipListNode<K, V> head;
+  private int level;
   private int size;
-
-  static class SkipListNode<K, V> {
-
-    SkipListNode<K, V> right;
-
-    SkipListNode<K, V> down;
-
-    K key;
-
-    V val;
-
-    public SkipListNode(K key, V val) {
-      this.key = key;
-      this.val = val;
-    }
-
-    public SkipListNode(SkipListNode<K, V> right, SkipListNode<K, V> down, K key, V val) {
-      this.right = right;
-      this.down = down;
-      this.key = key;
-      this.val = val;
-    }
-
-    public SkipListNode() {}
-  }
 
   public SkipList() {
     this(null);
@@ -376,5 +345,30 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
       }
     }
     return byteSize;
+  }
+
+  static class SkipListNode<K, V> {
+
+    SkipListNode<K, V> right;
+
+    SkipListNode<K, V> down;
+
+    K key;
+
+    V val;
+
+    public SkipListNode(K key, V val) {
+      this.key = key;
+      this.val = val;
+    }
+
+    public SkipListNode(SkipListNode<K, V> right, SkipListNode<K, V> down, K key, V val) {
+      this.right = right;
+      this.down = down;
+      this.key = key;
+      this.val = val;
+    }
+
+    public SkipListNode() {}
   }
 }

@@ -2,6 +2,7 @@ package org.jredis.command;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.jredis.server.command.CommandInfo;
 
 public class CommandContainer {
 
@@ -14,6 +15,7 @@ public class CommandContainer {
     CommandContainer.addCommand(CommandSet.SET);
     CommandContainer.addCommand(CommandExists.EXISTS);
     CommandContainer.addCommand(CommandMget.MGET);
+    CommandContainer.addCommand(CommandInfo.INFO);
   }
 
   public static void addCommand(CommandAcceptor command) {

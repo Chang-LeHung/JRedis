@@ -34,7 +34,7 @@ public class RedisDatabase {
   }
 
   public JRedisObject exists(JRedisObject key) throws JRedisDataBaseException {
-    return execute(Command.EXISTS.getFlag(), new JRedisObject[] {key});
+    return execute(Command.EXISTS.getFlag(), key);
   }
 
   public JRedisObject mget(JRedisObject ...args) throws JRedisDataBaseException {

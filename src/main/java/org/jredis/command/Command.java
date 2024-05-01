@@ -1,73 +1,82 @@
 package org.jredis.command;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public enum Command {
+  SET("set"),
 
-    SET("set"),
+  GET("get"),
 
-    GET("get"),
+  DEL("del"),
 
-    DEL("del"),
+  EXISTS("exists"),
 
-    EXISTS("exists"),
+  TYPE("type"),
 
-    TYPE("type"),
+  PERSIST("persist"),
 
-    PERSIST("persist"),
+  TTL("ttl"),
 
-    TTL("ttl"),
+  EXPIRE("expire"),
 
-    EXPIRE("expire"),
+  INCR("incr"),
 
-    INCR("incr"),
+  INCRBY("incrby"),
 
-    INCRBY("incrby"),
+  DECR("decr"),
 
-    DECR("decr"),
+  MGET("mget"),
 
-    MGET("mget"),
+  DECRBY("decrby"),
 
-    DECRBY("decrby");
+  INFO("info");
 
+  private static final Map<Byte, Command> map = new HashMap<>();
+  private static byte cnt = 0;
 
-    private static byte cnt = 0;
-    /**
-     * the name of command
-     */
-    private final String name;
-    /**
-     * the flag of command
-     */
-    private final byte flag;
-
-    private static final Map<Byte, Command> map = new HashMap<>();
-
-    static {
-        for (Command command : Command.values()) {
-            map.put(command.getFlag(), command);
-        }
+  static {
+    for (Command command : Command.values()) {
+      map.put(command.getFlag(), command);
     }
+  }
 
-    Command(String name) {
-      this.name = name;
-      flag = getCnt();
-    }
+  /** the name of command */
+  private final String name;
+  /** the flag of command */
+  private final byte flag;
 
-    private static byte getCnt() {
-        return cnt++;
-    }
+  Command(String name) {
+    this.name = name;
+    flag = getCnt();
+  }
 
-    public String getName() {
-        return name;
-    }
+  private static byte getCnt() {
+    return cnt++;
+  }
 
-    public byte getFlag() {
-        return flag;
-    }
+  public static Command getCommand(byte flag) {
+    return map.get(flag);
+  }
 
-    public static Command getCommand(byte flag) {
-        return map.get(flag);
-    }
+  public static void main(String[] args) {
+    System.out.println(Arrays.toString(Command.values()));
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public byte getFlag() {
+    return flag;
+  }
+
+  @Override
+  public String toString() {
+    return "Command{" +
+        "name='" + name + '\'' +
+        ", flag=" + flag +
+        '}';
+  }
 }

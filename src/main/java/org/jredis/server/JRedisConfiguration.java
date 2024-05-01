@@ -10,16 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class JRedisConfiguration {
 
-  private int port;
-
   private static final int defaultPort = 8080;
-
   private static final int defaultNumDB = 16;
-
   private static final double defaultLoadFactor = 0.75;
-
   private static final long defaultKeepAlive = 1000;
-
+  private int port;
   private int numDB;
 
   private double loadFactor;
@@ -31,7 +26,7 @@ public class JRedisConfiguration {
   }
 
   public JRedisConfiguration(Map<String, Object> config) {
-    try{
+    try {
       int port = defaultPort;
       if (config.containsKey("port")) {
         port = (int) config.get("port");
@@ -52,7 +47,7 @@ public class JRedisConfiguration {
       this.numDB = numDB;
       this.loadFactor = loadFactor;
       this.keepAlive = keepAlive;
-    }catch (ClassCastException e) {
+    } catch (ClassCastException e) {
       log.error(e.getMessage());
       System.exit(1);
     }
