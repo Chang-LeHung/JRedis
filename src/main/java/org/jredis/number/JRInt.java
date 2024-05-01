@@ -60,6 +60,11 @@ public class JRInt extends JRedisObject implements Comparable<JRInt> {
     return 9;
   }
 
+  @Override
+  public JRType getType() {
+    return JRType.INT;
+  }
+
   public void increment(long val) {
     this.val += val;
   }

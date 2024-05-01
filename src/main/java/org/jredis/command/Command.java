@@ -1,5 +1,8 @@
 package org.jredis.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Command {
 
     SET("set"),
@@ -39,6 +42,14 @@ public enum Command {
      */
     private final byte flag;
 
+    private static final Map<Byte, Command> map = new HashMap<>();
+
+    static {
+        for (Command command : Command.values()) {
+            map.put(command.getFlag(), command);
+        }
+    }
+
     Command(String name) {
       this.name = name;
       flag = getCnt();
@@ -54,5 +65,9 @@ public enum Command {
 
     public byte getFlag() {
         return flag;
+    }
+
+    public static Command getCommand(byte flag) {
+        return map.get(flag);
     }
 }

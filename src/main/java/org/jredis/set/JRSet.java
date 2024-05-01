@@ -1,5 +1,6 @@
 package org.jredis.set;
 
+import org.jredis.JRType;
 import org.jredis.JRedisObject;
 import org.jredis.exception.JRedisTypeNotMatch;
 
@@ -63,5 +64,10 @@ public class JRSet<K extends JRedisObject> extends JRedisObject implements Itera
     @Override
     public int serialSize() throws JRedisTypeNotMatch {
         return super.serialSize();
+    }
+
+    @Override
+    public JRType getType() {
+        return JRType.SET;
     }
 }

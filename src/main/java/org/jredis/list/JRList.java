@@ -143,6 +143,11 @@ public class JRList extends JRedisObject {
     return size;
   }
 
+  @Override
+  public JRType getType() {
+    return JRType.LIST;
+  }
+
   public JRedisObject getByIndex(int idx) throws JRedisOutOfBound {
     if (idx < size && idx >= 0) {
       var t = head;

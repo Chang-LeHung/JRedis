@@ -3,7 +3,7 @@ package org.jredis;
 import java.io.*;
 import org.jredis.exception.JRedisTypeNotMatch;
 
-public class JRedisObject {
+public abstract class JRedisObject {
 
   public byte[] serialize() throws JRedisTypeNotMatch {
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -45,4 +45,6 @@ public class JRedisObject {
     String name = this.getClass().getName();
     throw new UnsupportedOperationException("Class " + name + " is not serializable");
   }
+
+  public abstract JRType getType();
 }

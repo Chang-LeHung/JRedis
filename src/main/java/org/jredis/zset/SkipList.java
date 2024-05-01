@@ -339,6 +339,11 @@ public class SkipList<K, V> extends JRedisObject implements BST<K, V> {
   }
 
   @Override
+  public JRType getType() {
+    return JRType.ZSET;
+  }
+
+  @Override
   public int deserialize(InputStream stream) throws IOException, JRedisTypeNotMatch {
     int off = stream.available();
     if (stream.read() != JRType.ZSET.FLAG_NUMBER) {

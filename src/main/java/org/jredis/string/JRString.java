@@ -38,6 +38,11 @@ public class JRString extends JRedisObject implements Comparable<JRString> {
   }
 
   @Override
+  public JRType getType() {
+    return JRType.STRING;
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof JRString jrString)) return false;

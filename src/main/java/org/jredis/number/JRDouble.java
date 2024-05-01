@@ -21,6 +21,11 @@ public class JRDouble extends JRedisObject implements Comparable<JRDouble> {
   }
 
   @Override
+  public JRType getType() {
+    return JRType.DOUBLE;
+  }
+
+  @Override
   public int serialize(OutputStream out) throws IOException {
     out.write(JRType.DOUBLE.FLAG_NUMBER);
     EndianUtils.writeSwappedDouble(out, val);

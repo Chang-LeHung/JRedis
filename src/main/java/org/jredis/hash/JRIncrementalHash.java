@@ -231,6 +231,11 @@ public class JRIncrementalHash<K extends JRedisObject, V extends JRedisObject> e
     return 5 + serializeHashSize(dt[0]) + serializeHashSize(dt[1]);
   }
 
+  @Override
+  public JRType getType() {
+    return JRType.HASH;
+  }
+
   public boolean inReHash() {
     return rehashIndex == -1;
   }
