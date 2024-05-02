@@ -22,14 +22,22 @@ import org.jredis.string.JRString;
 @Slf4j
 public class JRedisClient {
 
-  private static final int MAX_BUFFER_SIZE = 1024; // maximum bytes of per message
+  private static final int MAX_BUFFER_SIZE = 1 << 12; // maximum bytes of per message
+
   @Getter private final SocketChannel channel;
+
   private final JRedisServer server;
+
   private final ByteBuffer buffer;
+
   @Getter private final InetAddress ip;
+
   @Getter private final int port;
+
   private long lastCommunication;
+
   @Getter private ClientState state;
+
   private ByteBuffer out;
 
   public JRedisClient(SocketChannel channel, JRedisServer server) {
@@ -81,7 +89,7 @@ public class JRedisClient {
           handleRequest();
           register(SelectionKey.OP_WRITE);
         } else {
-          // violate the rule: less than 1k per message
+          // violate the rule: less than 4k per message
           close();
           return -1;
         }

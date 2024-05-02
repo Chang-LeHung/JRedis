@@ -33,12 +33,16 @@ public enum Command {
 
   INFO("info");
 
-  private static final Map<Byte, Command> map = new HashMap<>();
+  private static final Map<Byte, Command> byteCommand = new HashMap<>();
+
+  private static final Map<String, Command> nameCommand = new HashMap<>();
+
   private static byte cnt = 0;
 
   static {
     for (Command command : Command.values()) {
-      map.put(command.getFlag(), command);
+      byteCommand.put(command.getFlag(), command);
+      nameCommand.put(command.getName(), command);
     }
   }
 
@@ -57,7 +61,11 @@ public enum Command {
   }
 
   public static Command getCommand(byte flag) {
-    return map.get(flag);
+    return byteCommand.get(flag);
+  }
+
+  public static Command getCommand(String name) {
+    return nameCommand.get(name);
   }
 
   public static void main(String[] args) {

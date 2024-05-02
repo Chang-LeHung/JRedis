@@ -26,15 +26,16 @@ public class UnitUtil {
     if (size < bLimit) {
       return size + b;
     } else if (size < kbLimit) {
-      return size / bLimit + kb;
+      return String.format("%.3f", (double)size / bLimit) + kb;
     } else if (size < mbLimit) {
-      return size / kbLimit + mb;
+      return String.format("%.3f", (double)size / kbLimit) + mb;
     } else if (size < gbLimit) {
-      return size / mbLimit + gb;
+      return String.format("%.3f", (double)size / mbLimit) + gb;
     } else if (size < tbLimit) {
-      return size / gbLimit + tb;
+      return String.format("%.3f", (double)size / gbLimit) + tb;
     } else {
       return size + b;
     }
   }
+
 }
