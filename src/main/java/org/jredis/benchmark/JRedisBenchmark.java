@@ -1,4 +1,4 @@
-package org.jredis.client;
+package org.jredis.benchmark;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.Getter;
 import lombok.Setter;
+import org.jredis.client.JRedisClient;
 
 public class JRedisBenchmark {
 
