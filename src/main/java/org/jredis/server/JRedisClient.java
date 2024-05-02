@@ -23,17 +23,13 @@ import org.jredis.string.JRString;
 public class JRedisClient {
 
   private static final int MAX_BUFFER_SIZE = 1024; // maximum bytes of per message
-  @Getter
-  private final SocketChannel channel;
+  @Getter private final SocketChannel channel;
   private final JRedisServer server;
   private final ByteBuffer buffer;
-  @Getter
-  private final InetAddress ip;
-  @Getter
-  private final int port;
+  @Getter private final InetAddress ip;
+  @Getter private final int port;
   private long lastCommunication;
-  @Getter
-  private ClientState state;
+  @Getter private ClientState state;
   private ByteBuffer out;
 
   public JRedisClient(SocketChannel channel, JRedisServer server) {
@@ -55,7 +51,7 @@ public class JRedisClient {
     channel.register(server.getSelector(), op);
   }
 
-  public void close()  {
+  public void close() {
     // keep following order
     server.removeClient(this);
     SelectionKey key = channel.keyFor(server.getSelector());
@@ -75,7 +71,7 @@ public class JRedisClient {
   public int doReadEvent() {
     if (state == ClientState.IDEL) {
       updateLastCommunication();
-      try{
+      try {
         int size = channel.read(buffer);
         if (size == -1) {
           close();
@@ -143,12 +139,12 @@ public class JRedisClient {
     }
   }
 
-  private JRedisRequest processCommand() throws JRedisDataBaseException, JRedisTypeNotMatch, IOException {
-      return acceptMsgAndBuildRequest();
+  private JRedisRequest processCommand()
+      throws JRedisDataBaseException, JRedisTypeNotMatch, IOException {
+    return acceptMsgAndBuildRequest();
   }
 
-  private JRedisRequest acceptMsgAndBuildRequest()
-      throws JRedisTypeNotMatch, IOException {
+  private JRedisRequest acceptMsgAndBuildRequest() throws JRedisTypeNotMatch, IOException {
     int size = buffer.remaining();
     // get which command
     byte command = buffer.get();
@@ -166,7 +162,12 @@ public class JRedisClient {
       args.add(obj);
     }
     var commandAgs = args.toArray(new JRedisObject[0]);
-log.info("IP: {} port: {} command: {}, args: {}", ip.getHostAddress(), port, CommandContainer.getCommand(command).getName(), commandAgs);
+    log.info(
+        "IP: {} port: {} command: {}, args: {}",
+        ip.getHostAddress(),
+        port,
+        CommandContainer.getCommand(command).getName(),
+        commandAgs);
     return new JRedisRequest(Command.getCommand(command), commandAgs, size);
   }
 
@@ -184,14 +185,10 @@ log.info("IP: {} port: {} command: {}, args: {}", ip.getHostAddress(), port, Com
 
   @Override
   public String toString() {
-    return "JRedisClient{" +
-        "ip=" + ip +
-        ", port=" + port +
-        '}';
+    return "JRedisClient{" + "ip=" + ip + ", port=" + port + '}';
   }
 
   public enum ClientState {
-
     IDEL,
 
     READING,

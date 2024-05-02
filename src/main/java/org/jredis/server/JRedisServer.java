@@ -55,7 +55,7 @@ public class JRedisServer {
   }
 
   public void addClient(JRedisClient client) {
-log.info("Adding client: {}", client);
+    log.info("Adding client: {}", client);
     clients.put(client.getChannel(), client);
   }
 
@@ -78,20 +78,20 @@ log.info("Adding client: {}", client);
     sc.configureBlocking(false);
     JRedisClient client = new JRedisClient(sc, this);
     client.register(SelectionKey.OP_READ);
-log.info("accept client {}", client);
+    log.info("accept client {}", client);
     addClient(client);
   }
 
   private void processRead(SelectionKey key) {
     var ch = (SocketChannel) key.channel();
-log.info("Processing read event for client: {}", getClient(ch));
+    log.info("Processing read event for client: {}", getClient(ch));
     JRedisClient client = getClient(ch);
     client.doReadEvent();
   }
 
   private void processWrite(SelectionKey key) {
     var ch = (SocketChannel) key.channel();
-log.info("Processing write event for client: {}", getClient(ch));
+    log.info("Processing write event for client: {}", getClient(ch));
     JRedisClient client = getClient(ch);
     client.doWriteEvent();
   }
@@ -103,7 +103,7 @@ log.info("Processing write event for client: {}", getClient(ch));
 
   private void dispatchEvent(Set<SelectionKey> keys) throws IOException {
     Iterator<SelectionKey> iterator = keys.iterator();
-log.info("Dispatching {} events", keys.size());
+    log.info("Dispatching {} events", keys.size());
     while (iterator.hasNext()) {
       SelectionKey key = iterator.next();
       if (key.isValid() && key.isAcceptable()) {
@@ -127,12 +127,12 @@ log.info("Dispatching {} events", keys.size());
   }
 
   public void eventLoop() {
-log.info("JRedis boot");
+    log.info("JRedis boot");
     while (state != ServerState.STOPPED) {
       try {
         eventPoll();
       } catch (IOException e) {
-log.error("Server crashed: {}", e.getMessage());
+        log.error("Server crashed: {}", e.getMessage());
         shutDown(1);
       }
       serverCron();
@@ -147,9 +147,9 @@ log.error("Server crashed: {}", e.getMessage());
     } catch (IOException ignore) {
     }
     if (exitCode == 0) {
-log.info("JRedis exit");
+      log.info("JRedis exit");
     } else {
-log.error("JRedis exit, exit code = {}", exitCode);
+      log.error("JRedis exit, exit code = {}", exitCode);
     }
     System.exit(exitCode);
   }
@@ -183,21 +183,21 @@ log.error("JRedis exit, exit code = {}", exitCode);
     preProcessRequest(request, client);
     JRedisResponse res = null;
     try {
-log.info("process request: {}", request);
+      log.info("process request: {}", request);
       res = processCommand(request, client);
     } catch (JRedisDataBaseException | JRedisTypeNotMatch | IOException e) {
-log.error("JRedis process command error: {}", e.getMessage());
+      log.error("JRedis process command error: {}", e.getMessage());
       // be careful with OOM
       try {
         // fall back to this
         res = new JRedisResponse(new JRString(e.getMessage()), request);
         res.setError(true);
       } catch (Exception ignored) {
-log.error("JRedis fatal error: {} ", e.getMessage());
+        log.error("JRedis fatal error: {} ", e.getMessage());
         var stream = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(stream);
         e.printStackTrace(ps);
-log.error("JRedis fatal error trace {}", stream);
+        log.error("JRedis fatal error trace {}", stream);
         shutDown(1);
       }
     }
