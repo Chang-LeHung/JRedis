@@ -22,8 +22,6 @@ public class JRedisServerTest {
 
     layout = ClassLayout.parseClass(JRIncrementalHash.class);
     System.out.println(layout.toPrintable());
-
-    server.shutDown(0);
   }
 
   public static void main(String[] args) throws IOException {
