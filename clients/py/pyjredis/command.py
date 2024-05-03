@@ -17,6 +17,8 @@ class Command(Enum):
 
 	INFO = 13
 
+	SHUTDOWN = 14
+
 
 commands: Dict[str, Command] = {
 	"SET": Command.SET,
@@ -25,6 +27,7 @@ commands: Dict[str, Command] = {
 	"EXISTS": Command.EXISTS,
 	"INCR": Command.INCR,
 	"DECR": Command.DECR,
-	"INFO": Command.INFO
+	"INFO": Command.INFO,
+	"SHUTDOWN": Command.SHUTDOWN,
 }
 

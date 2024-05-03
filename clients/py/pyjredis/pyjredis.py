@@ -73,7 +73,7 @@ class JRedisClient:
 	def recv_msg(self):
 		while True:
 			msg = self.sock.recvmsg(self.BUF_SIZE)
-			if msg == b"":
+			if msg[0] == b"":
 				self.close()
 				raise JRedisException("Connection closed")
 			self.cur_data += msg[0]

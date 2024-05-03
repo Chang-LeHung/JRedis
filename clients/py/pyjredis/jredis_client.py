@@ -21,7 +21,12 @@ def main() -> int:
 			if command == 'exit':
 				break
 			ret = client.process_command(command)
+			if ret is None:
+				break
 			print(ret.__repr__())
 		except Exception as e:
+			if e.__str__() == "Connection closed":
+				print("jredis exits normally")
+				break
 			print(e, file=sys.stderr)
 	return 0
