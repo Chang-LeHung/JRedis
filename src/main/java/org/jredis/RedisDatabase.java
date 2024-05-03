@@ -2,11 +2,16 @@ package org.jredis;
 
 import org.jredis.command.*;
 import org.jredis.exception.JRedisDataBaseException;
+import org.jredis.exception.JRedisTypeNotMatch;
 import org.jredis.hash.JRIncrementalHash;
 import org.jredis.number.JRInt;
 import org.jredis.string.JRString;
 
-public class RedisDatabase {
+import java.io.*;
+
+public class RedisDatabase extends JRedisObject {
+
+  private static final String filename = "db.jrd";
 
   private final JRIncrementalHash<JRedisObject, JRedisObject> db;
 
@@ -72,5 +77,55 @@ public class RedisDatabase {
 
   public JRIncrementalHash<JRedisObject, JRInt> getExpire() {
     return expire;
+  }
+
+  @Override
+  public JRType getType() {
+    return JRType.DATABASE;
+  }
+
+  @Override
+  public int serialize(OutputStream out) throws IOException, JRedisTypeNotMatch {
+    return db.serialize(out) + expire.serialize(out);
+  }
+
+
+  @Override
+  public int deserialize(InputStream stream) throws IOException, JRedisTypeNotMatch {
+    return db.deserialize(stream) + expire.deserialize(stream);
+  }
+
+  @Override
+  public int serialSize() throws JRedisTypeNotMatch {
+    return db.serialSize() + expire.serialSize();
+  }
+
+  public void fsync() throws JRedisTypeNotMatch, IOException {
+    fsync(filename);
+  }
+
+  public void fsync(String filename) throws IOException, JRedisTypeNotMatch {
+    FileOutputStream fs = new FileOutputStream(filename);
+    BufferedOutputStream stream = new BufferedOutputStream(fs);
+    db.serialize(stream);
+    db.serialize(stream);
+    stream.flush();
+    fs.getFD().sync();
+  }
+
+  public void load(String filename) throws JRedisTypeNotMatch, IOException {
+    FileInputStream fs;
+    try {
+      fs = new FileInputStream(filename);
+    } catch (FileNotFoundException ignore) {
+      return;
+    }
+    BufferedInputStream stream = new BufferedInputStream(fs);
+    db.deserialize(stream);
+    expire.deserialize(stream);
+  }
+
+  public void load() throws JRedisTypeNotMatch, IOException {
+    load(filename);
   }
 }

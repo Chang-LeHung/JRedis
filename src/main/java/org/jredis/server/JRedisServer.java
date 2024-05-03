@@ -52,6 +52,12 @@ public class JRedisServer {
     addRequestProcessor(statisticProcessor);
     addResponseProcessor(statisticProcessor);
     startTime = LocalDateTime.now();
+    try {
+      database.load();
+    } catch (JRedisTypeNotMatch e) {
+      log.error("load database error {}", e.getMessage());
+      shutDown(1);
+    }
   }
 
   public void addClient(JRedisClient client) {
@@ -137,7 +143,17 @@ public class JRedisServer {
       }
       serverCron();
     }
+    exitNormally();
+  }
+
+  private void exitNormally() {
     closeAllClients();
+    try {
+      database.fsync();
+    } catch (Exception e) {
+      log.error("fsync error {}", e.getMessage());
+      shutDown(1);
+    }
   }
 
 
