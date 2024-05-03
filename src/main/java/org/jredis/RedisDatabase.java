@@ -108,7 +108,7 @@ public class RedisDatabase extends JRedisObject {
     FileOutputStream fs = new FileOutputStream(filename);
     BufferedOutputStream stream = new BufferedOutputStream(fs);
     db.serialize(stream);
-    db.serialize(stream);
+    expire.serialize(stream);
     stream.flush();
     fs.getFD().sync();
   }
