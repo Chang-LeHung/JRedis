@@ -31,7 +31,9 @@ public enum Command {
 
   DECRBY("decrby"),
 
-  INFO("info");
+  INFO("info"),
+
+  SHUTDOWN("shutdown");
 
   private static final Map<Byte, Command> byteCommand = new HashMap<>();
 

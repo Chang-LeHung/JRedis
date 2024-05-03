@@ -85,9 +85,9 @@ public class JRedisClient {
           close();
         } else if (size < MAX_BUFFER_SIZE) {
           buffer.flip();
-          state = ClientState.WRITING;
           handleRequest();
           register(SelectionKey.OP_WRITE);
+          state = ClientState.WRITING;
         } else {
           // violate the rule: less than 4k per message
           close();

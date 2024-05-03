@@ -10,6 +10,7 @@ public class JRedisServerCommand {
 
   static {
     serverCommandMap.put(Command.INFO.getFlag(), CommandInfo.INFO);
+    serverCommandMap.put(Command.SHUTDOWN.getFlag(), CommandShutdown.SHUTDOWN);
   }
 
   public static AbstractServerCommand getCommand(byte flag) {

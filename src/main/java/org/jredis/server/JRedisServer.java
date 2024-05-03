@@ -137,11 +137,30 @@ public class JRedisServer {
       }
       serverCron();
     }
+    closeAllClients();
+  }
+
+
+  private void closeAllClients() {
+    clients.forEach((ch, client) -> {
+      ((SocketChannel) ch).keyFor(selector).cancel();
+      try {
+        ch.close();
+      } catch (IOException e) {
+        log.error("close channel error: {}", e.getMessage());
+      }
+    });
+    clients.clear();
+  }
+
+  public void close() {
+    state = ServerState.STOPPED;
   }
 
   public void shutDown(int exitCode) {
     state = ServerState.STOPPED;
     try {
+      closeAllClients();
       server.close();
       selector.close();
     } catch (IOException ignore) {
