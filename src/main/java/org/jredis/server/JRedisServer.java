@@ -90,14 +90,14 @@ public class JRedisServer {
 
   private void processRead(SelectionKey key) {
     var ch = (SocketChannel) key.channel();
-    log.info("Processing read event for client: {}", getClient(ch));
+    // log.info("Processing read event for client: {}", getClient(ch));
     JRedisClient client = getClient(ch);
     client.doReadEvent();
   }
 
   private void processWrite(SelectionKey key) {
     var ch = (SocketChannel) key.channel();
-    log.info("Processing write event for client: {}", getClient(ch));
+    // log.info("Processing write event for client: {}", getClient(ch));
     JRedisClient client = getClient(ch);
     client.doWriteEvent();
   }
@@ -109,7 +109,7 @@ public class JRedisServer {
 
   private void dispatchEvent(Set<SelectionKey> keys) throws IOException {
     Iterator<SelectionKey> iterator = keys.iterator();
-    log.info("Dispatching {} events", keys.size());
+    // log.info("Dispatching {} events", keys.size());
     while (iterator.hasNext()) {
       SelectionKey key = iterator.next();
       if (key.isValid() && key.isAcceptable()) {
@@ -218,7 +218,7 @@ public class JRedisServer {
     preProcessRequest(request, client);
     JRedisResponse res = null;
     try {
-      log.info("process request: {}", request);
+      // log.info("process request: {}", request);
       res = processCommand(request, client);
     } catch (JRedisDataBaseException | JRedisTypeNotMatch | IOException e) {
       log.error("JRedis process command error: {}", e.getMessage());

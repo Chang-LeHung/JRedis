@@ -170,12 +170,12 @@ public class JRedisClient {
       args.add(obj);
     }
     var commandAgs = args.toArray(new JRedisObject[0]);
-    log.info(
-        "IP: {} port: {} command: {}, args: {}",
-        ip.getHostAddress(),
-        port,
-        CommandContainer.getCommand(command).getName(),
-        commandAgs);
+    // log.info(
+    //     "IP: {} port: {} command: {}, args: {}",
+    //     ip.getHostAddress(),
+    //     port,
+    //     CommandContainer.getCommand(command).getName(),
+    //    commandAgs);
     return new JRedisRequest(Command.getCommand(command), commandAgs, size);
   }
 
