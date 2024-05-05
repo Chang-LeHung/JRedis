@@ -39,3 +39,4 @@ build/
 *.log
 *.pyc
 *.jrd
+build
