@@ -18,6 +18,7 @@ public class CommandContainer {
     CommandContainer.addCommand(CommandMget.MGET);
     CommandContainer.addCommand(CommandInfo.INFO);
     CommandContainer.addCommand(CommandShutdown.SHUTDOWN);
+    CommandContainer.addCommand(CommandPing.PING);
   }
 
   public static void addCommand(CommandAcceptor command) {

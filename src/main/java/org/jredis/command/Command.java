@@ -33,7 +33,9 @@ public enum Command {
 
   INFO("info"),
 
-  SHUTDOWN("shutdown");
+  SHUTDOWN("shutdown"),
+
+  PING("ping");
 
   private static final Map<Byte, Command> byteCommand = new HashMap<>();
 

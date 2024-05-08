@@ -8,4 +8,6 @@ public class CommandReturnState {
   public static final JRedisObject OK = new JRString("OK");
 
   public static final JRedisObject Nil = new JRString("Nil");
+
+  public static final JRedisObject PONG = new JRString("PONG");
 }
